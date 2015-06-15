@@ -1,11 +1,12 @@
 # kegbot
+
 all code relating to RPi-controlled kegerator monitoring system
 
 ##Other Sources
 
 Check out [Kegomatic](https://learn.adafruit.com/adafruit-keg-bot/overview) from Adafruit for flow metering ([repo](https://github.com/adafruit/Kegomatic)).
 
-Install a copy of [Raspbian](https://www.raspberrypi.org/downloads/).
+Install a copy of [Raspbian](https://www.raspberrypi.org/downloads/) (Development of prototype is based on Debian Wheezy, kernel 3.18)
 
 Learn about [OLED displaying](https://learn.adafruit.com/adafruit-1-5-color-oled-breakout-board) from Adafruit.
 
@@ -41,3 +42,35 @@ has yet to start, but when it does I intend to get the RPi working in probably t
 - Slack integration that pulls from the API ("@kegbot what's on tap?")
 - pull more beverage data from RateBeer and/or BeerAdvocate (stuff like IBU, SRM. Still allow for manual input though, in case of homebrew)
 - data analytics presented by a web page that pulls from the API
+
+
+##Initial Deployment
+
+To set up a brand new Raspberry Pi for using this package, first install Raspbian (Debian Wheezy), then add a whole slew of packages:
+
+Node:
+
+    $ wget http://node-arm.herokuapp.com/node_latest_armhf.deb
+    $ sudo dpkg -i node_latest_armhf.deb
+    $ which node # verify /usr/local/bin/node appears
+
+Mongo:
+
+    $ sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo git npm
+    $ git clone https://github.com/skrabban/mongo-nonx86
+    $ cd mongo-nonx86
+    $ sudo scons
+    $ sudo scons --prefix=/opt/mongo install
+    $ sudo mkdir -p /data/db
+    $ sudo adduser mongodb
+    $ sudo chown -R mongodb /data
+    $ sudo nano /home/mongodb/.bashrc  # export PATH="$PATH:/opt/mongo/bin"
+    $ su mongodb
+    $ which mongod # verify /opt/mongo/bin/mongod appears
+    $ mongod # this runs mongo. verify that it opens properly. ctrl-c to close it.
+
+TODO:
+
+- start `mongod` on startup
+- start web server on startup
+- start sensor monitor and display on startup
