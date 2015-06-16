@@ -31,18 +31,23 @@ And the web-based API may collect and store some information too:
 
 ##Development
 
-has yet to start, but when it does I intend to get the RPi working in probably the following order
+###TODO
 
 - connect to flow meter, read inputs
-- set up web server with simple API endpoint (or even perhaps pages) for data entry
-- ability to tell the RPi what was just put on tap
-- RPi to deduct and log amounts poured
+    - write inputs to mongo
+    - update taphandle displays
+- set up a node server
+    - API endpoints for
+        - "I just put this on tap"
+        - "what's on tap?"
+        - full data dump of history (paginated?)
+    - webpages for
+        - data entry
+        - analytics  & history
 - connect RPi to OLED displays
-- update displays periodically to show relevant beverage data
+    - update displays
 - Slack integration that pulls from the API ("@kegbot what's on tap?")
 - pull more beverage data from RateBeer and/or BeerAdvocate (stuff like IBU, SRM. Still allow for manual input though, in case of homebrew)
-- data analytics presented by a web page that pulls from the API
-
 
 ##Initial Deployment
 
@@ -56,7 +61,7 @@ Node:
 
 Mongo:
 
-    $ sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo git npm
+    $ sudo apt-get install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev scons libboost-all-dev python-pymongo
     $ git clone https://github.com/skrabban/mongo-nonx86
     $ cd mongo-nonx86
     $ sudo scons
@@ -68,6 +73,20 @@ Mongo:
     $ su mongodb
     $ which mongod # verify /opt/mongo/bin/mongod appears
     $ mongod # this runs mongo. verify that it opens properly. ctrl-c to close it.
+
+NPM
+
+    $ sudo apt-get install npm
+    $ which npm
+
+Download a sample project (optional)
+
+    $ git clone https://github.com/jlouthan/actw-carpool.git
+    $ cd actw-carpool/
+    $ npm install
+    $ # open a second terminal, log in as mongdb, run mongod, switch back to first terminal
+    $ node server.js
+    $ # open a browser and navigate to localhost:3088
 
 TODO:
 
